@@ -1,4 +1,5 @@
 #include <LCD_I2C.h>
+
 #include <EEPROM.h>
 
 #include <vector>
@@ -17,9 +18,8 @@
 #define FPS 6
 
 // flowers
-#define TULIP_LEFT 1 
-uint8_t tupli_left[8] =
-{
+#define TULIP_LEFT 1
+uint8_t tupli_left[8] = {
   B00110,
   B01001,
   B11101,
@@ -30,8 +30,7 @@ uint8_t tupli_left[8] =
   B00100
 };
 #define TULIP_RIGHT 2
-uint8_t tupli_right[8] =
-{
+uint8_t tupli_right[8] = {
   B01100,
   B10010,
   B10111,
@@ -42,8 +41,7 @@ uint8_t tupli_right[8] =
   B00100
 };
 #define GARLIC 3
-uint8_t garlic[8] =
-{
+uint8_t garlic[8] = {
   B01110,
   B10001,
   B10101,
@@ -109,9 +107,17 @@ byte unknown_flower[] = {
   B00100
 };
 
-
 #define FLOWERS_TYPE_COUNT 8
-byte FLOWERS[FLOWERS_TYPE_COUNT]= {TULIP_LEFT, TULIP_RIGHT, GARLIC, FLOWER_R, FLOWER_L, BERRY, POPPY, UNKNOWN_FLOWER};
+byte FLOWERS[FLOWERS_TYPE_COUNT] = {
+  TULIP_LEFT,
+  TULIP_RIGHT,
+  GARLIC,
+  FLOWER_R,
+  FLOWER_L,
+  BERRY,
+  POPPY,
+  UNKNOWN_FLOWER
+};
 
 // map
 #define PLAYER_START_X 13
@@ -121,33 +127,789 @@ byte FLOWERS[FLOWERS_TYPE_COUNT]= {TULIP_LEFT, TULIP_RIGHT, GARLIC, FLOWER_R, FL
 #define MAP_HEIGHT 27
 
 const byte lvl_map[MAP_HEIGHT][MAP_WIDTH] PROGMEM = {
-  {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-  {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-  {1, 0, 1, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 0, 1, 0, 1},
-  {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-  {1, 0, 1, 0, 3, 3, 1, 0, 3, 3, 1, 0, 3, 3, 3, 0, 1, 3, 1, 0, 1, 0, 1, 1, 1, 0, 1},
-  {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1},
-  {1, 0, 1, 0, 3, 3, 3, 0, 3, 3, 3, 0, 3, 0, 1, 0, 3, 3, 1, 0, 3, 3, 3, 3, 1, 0, 1},
-  {1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
-  {1, 0, 0, 0, 3, 3, 1, 3, 3, 0, 1, 0, 1, 0, 1, 3, 1, 0, 3, 3, 1, 0, 3, 3, 3, 3, 1},
-  {1, 0, 3, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-  {1, 0, 1, 0, 3, 3, 3, 0, 1, 0, 1, 1, 0, 3, 3, 0, 3, 3, 3, 3, 3, 0, 3, 3, 3, 0, 1},
-  {1, 0, 1, 0, 0, 0, 1, 0, 1, 3, 1, 0, 0, 0, 1, 3, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1},
-  {0, 0, 1, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 3, 1, 0, 0},
-  {3, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 3, 3, 0, 0, 1, 0, 0, 0, 0, 0, 3},
-  {1, 3, 3, 0, 3, 0, 3, 0, 3, 1, 1, 3, 0, 3, 1, 1, 1, 1, 3, 0, 1, 3, 3, 0, 3, 0, 1},
-  {1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1},
-  {1, 3, 3, 0, 1, 0, 1, 0, 3, 3, 3, 0, 3, 3, 1, 1, 1, 1, 1, 0, 3, 3, 3, 0, 1, 3, 1},
-  {1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-  {1, 0, 3, 0, 1, 0, 1, 0, 3, 0, 1, 0, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1},
-  {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-  {1, 3, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 3, 3, 1, 0, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1},
-  {1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
-  {1, 0, 3, 0, 1, 0, 1, 0, 1, 3, 1, 3, 1, 3, 3, 0, 1, 0, 3, 3, 1, 0, 3, 3, 3, 3, 1},
-  {1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
-  {1, 0, 1, 0, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 0, 1, 0, 3, 3, 3, 3, 3, 3, 3, 0, 1},
-  {1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-  {1, 3, 1, 3, 3, 3, 1, 3, 3, 3, 3, 3, 0, 3, 1, 3, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1},
+  {
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    0,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    0,
+    3,
+    3,
+    3,
+    3,
+    3,
+    0,
+    1,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    3,
+    3,
+    1,
+    0,
+    3,
+    3,
+    1,
+    0,
+    3,
+    3,
+    3,
+    0,
+    1,
+    3,
+    1,
+    0,
+    1,
+    0,
+    1,
+    1,
+    1,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    3,
+    3,
+    3,
+    0,
+    3,
+    3,
+    3,
+    0,
+    3,
+    0,
+    1,
+    0,
+    3,
+    3,
+    1,
+    0,
+    3,
+    3,
+    3,
+    3,
+    1,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    0,
+    0,
+    3,
+    3,
+    1,
+    3,
+    3,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    3,
+    1,
+    0,
+    3,
+    3,
+    1,
+    0,
+    3,
+    3,
+    3,
+    3,
+    1
+  },
+  {
+    1,
+    0,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    3,
+    3,
+    3,
+    0,
+    1,
+    0,
+    1,
+    1,
+    0,
+    3,
+    3,
+    0,
+    3,
+    3,
+    3,
+    3,
+    3,
+    0,
+    3,
+    3,
+    3,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    3,
+    1,
+    0,
+    0,
+    0,
+    1,
+    3,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1
+  },
+  {
+    0,
+    0,
+    1,
+    0,
+    3,
+    3,
+    3,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    3,
+    3,
+    3,
+    3,
+    1,
+    0,
+    0
+  },
+  {
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    3,
+    3,
+    0,
+    0,
+    0,
+    3,
+    3,
+    3,
+    3,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    3
+  },
+  {
+    1,
+    3,
+    3,
+    0,
+    3,
+    0,
+    3,
+    0,
+    3,
+    1,
+    1,
+    3,
+    0,
+    3,
+    1,
+    1,
+    1,
+    1,
+    3,
+    0,
+    1,
+    3,
+    3,
+    0,
+    3,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1
+  },
+  {
+    1,
+    3,
+    3,
+    0,
+    1,
+    0,
+    1,
+    0,
+    3,
+    3,
+    3,
+    0,
+    3,
+    3,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    3,
+    3,
+    3,
+    0,
+    1,
+    3,
+    1
+  },
+  {
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    3,
+    0,
+    1,
+    0,
+    1,
+    0,
+    3,
+    0,
+    1,
+    0,
+    3,
+    3,
+    3,
+    0,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  },
+  {
+    1,
+    3,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    3,
+    3,
+    1,
+    0,
+    3,
+    0,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    1
+  },
+  {
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    3,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    3,
+    1,
+    3,
+    1,
+    3,
+    3,
+    0,
+    1,
+    0,
+    3,
+    3,
+    1,
+    0,
+    3,
+    3,
+    3,
+    3,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    1,
+    3,
+    3,
+    0,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    0,
+    1,
+    0,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    0,
+    1
+  },
+  {
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  },
+  {
+    1,
+    3,
+    1,
+    3,
+    3,
+    3,
+    1,
+    3,
+    3,
+    3,
+    3,
+    3,
+    0,
+    3,
+    1,
+    3,
+    1,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    1
+  },
 };
 
 // other
@@ -165,7 +927,6 @@ byte bush_top[] = {
   B11111
 };
 
-
 // timers
 IntervalTimer timer;
 
@@ -177,7 +938,7 @@ LCD_I2C lcd(LCD_ADDRESS);
 
 class Joy {
   public:
-  int p0;
+    int p0;
   int p1;
   int p2;
   Joy(int pin0, int pin1, int pin2) {
@@ -221,7 +982,7 @@ Joy joy(joyX, joyY, joyBtn);
 class Menu {
 
   public:
-  int opts_count;
+    int opts_count;
   int m_length;
   int m_pos = 0;
   int m_cursor_pos = 0;
@@ -242,64 +1003,62 @@ class Menu {
 
   void change_option(int inc) {
 
-  int old_pos = m_cursor_pos;
-  m_cursor_pos = max(min(m_length - 1, m_cursor_pos + inc), 0);
-  m_pos = max(min(opts_count - 1, m_pos + inc), 0);
-  bool cursor_chaneged = old_pos != m_cursor_pos;
+    int old_pos = m_cursor_pos;
+    m_cursor_pos = max(min(m_length - 1, m_cursor_pos + inc), 0);
+    m_pos = max(min(opts_count - 1, m_pos + inc), 0);
+    bool cursor_chaneged = old_pos != m_cursor_pos;
 
-  if (!cursor_chaneged) {
-    if (inc > 0) {
-      if (end_ + 1 <= opts_count - 1) {
+    if (!cursor_chaneged) {
+      if (inc > 0) {
+        if (end_ + 1 <= opts_count - 1) {
 
-        ++start_;
-        ++end_;
-      }
-    } else if (inc < 0) {
-      if (start_ - 1 >= 0) {
-        --start_;
-        --end_;
-
+          ++start_;
+          ++end_;
+        }
+      } else if (inc < 0) {
+        if (start_ - 1 >= 0) {
+          --start_;
+          --end_;
+        }
       }
     }
   }
-}
 
   void print() {
+    lcd.clear();
+    for (int i = 0; i < m_length; i++) {
+      lcd.setCursor(0, i);
 
-  lcd.clear();
-  for (int i = 0; i < m_length; i++) {
-    lcd.setCursor(0, i);
-
-    String s = opts[i + start_], o;
-    if (m_cursor_pos == i) {
-      o = ">" + s + "<";
-    } else {
-      o = " " + s;
+      String s = opts[i + start_], o;
+      if (m_cursor_pos == i) {
+        o = ">" + s + "<";
+      } else {
+        o = " " + s;
+      }
+      lcd.print(o);
     }
-    lcd.print(o);
   }
-}
 
   int select() {
-  bool selected;
-  int change_opt;
+    bool selected;
+    int change_opt;
 
-  do {
-    change_opt = joy.moveY();
-    selected = joy.pressedBtn() || (joy.moveY() == 1);
-  } while (!(change_opt || selected));
+    do {
+      change_opt = joy.moveY();
+      selected = joy.pressedBtn() || (joy.moveY() == 1);
+    } while (!(change_opt || selected));
 
-  if (change_opt) {
-    wait_until_released();
-    selected = 0;
-    change_option(-change_opt);
-    return -1;
+    if (change_opt) {
+      wait_until_released();
+      selected = 0;
+      change_option(-change_opt);
+      return -1;
+    }
+
+    return m_pos;
   }
-
-  return m_pos;
-}
   private:
-  String * opts;
+    String * opts;
 };
 
 String options[4] = {
@@ -312,9 +1071,8 @@ int max_option = 4;
 Menu menu(options, max_option, 2);
 
 void lcd_setup() {
-
   lcd.begin();
-  
+
   lcd.createChar(TULIP_LEFT, tupli_left);
   lcd.createChar(TULIP_RIGHT, tupli_right);
   lcd.createChar(GARLIC, garlic);
@@ -325,7 +1083,7 @@ void lcd_setup() {
   lcd.createChar(UNKNOWN_FLOWER, unknown_flower);
 
   lcd.createChar(BUSH_TOP, bush_top);
-  
+
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.noAutoscroll();
@@ -336,7 +1094,6 @@ void lcd_setup() {
 }
 
 void welcome_screen() {
-
   String s1 = "Flower";
   String s2 = "Picker";
   int s1_offset = 4;
@@ -350,8 +1107,8 @@ void welcome_screen() {
 
   while (s1_curr_offset < 17 && s2_curr_offset + s2.length() >= 0) {
     for (int j = 0; j < WIDTH; j++) {
-        top[j] = ASCII_SPACE;
-        bottom[j] = ASCII_SPACE;
+      top[j] = ASCII_SPACE;
+      bottom[j] = ASCII_SPACE;
     }
 
     for (unsigned int j = 0; j < s1.length(); j++) {
@@ -372,7 +1129,7 @@ void welcome_screen() {
     lcd.setCursor(0, 1);
     print_array(bottom, WIDTH);
     if (s1_curr_offset == s1_offset) {
-      for (int k=0; k<3; k++){
+      for (int k = 0; k < 3; k++) {
         lcd.noBacklight();
         delay(250);
         lcd.backlight();
@@ -384,7 +1141,6 @@ void welcome_screen() {
 
     s1_curr_offset++;
     s2_curr_offset--;
-
   }
 }
 
@@ -416,16 +1172,14 @@ void display_menu() {
 }
 
 class Flower {
-  
   public:
-
-  byte x;
+    byte x;
   byte y;
   uint8_t type;
 
-  Flower(byte x_, byte y_){
+  Flower(byte x_, byte y_) {
     x = x_;
-    y = y_;  
+    y = y_;
     int rnd = random(0, FLOWERS_TYPE_COUNT);
     type = FLOWERS[rnd];
   }
@@ -433,7 +1187,7 @@ class Flower {
 
 class Game {
   public:
-  int score;
+    int score;
   byte ending;
   int ticks_left;
   int pos_x;
@@ -446,17 +1200,17 @@ class Game {
   int facing_y;
 
   bool running;
-  std::vector<Flower> flowers;
+  std::vector < Flower > flowers;
   byte flowers_count;
   int state;
-  
+
   Game(int x, int y) {
     start_x = x;
     start_y = y;
     reset();
-    }
-    
-  void reset(){
+  }
+
+  void reset() {
     pos_x = start_x;
     pos_y = start_y;
 
@@ -466,53 +1220,55 @@ class Game {
     facing_x = (pos_x - MAP_WIDTH >= 0) - (pos_x - MAP_WIDTH <= 0);
     facing_y = (pos_y - MAP_HEIGHT >= 0) - (pos_y - MAP_HEIGHT <= 0);
     if (!facing_x) {
-      facing_x = random(2) ? 1: -1;
+      facing_x = random(2) ? 1 : -1;
     }
     if (!facing_y) {
-      facing_x = random(2) ? 1: -1;
+      facing_x = random(2) ? 1 : -1;
     }
     state = 0;
- 
+
     float flower_desity = 1. / 8 / 8;
     flowers_count = max(1, ceil(MAP_WIDTH * MAP_HEIGHT * flower_desity));
 
     flowers.clear();
-    for (int i = 0; i < flowers_count; i++){
+    for (int i = 0; i < flowers_count; i++) {
       byte x, y;
       bool valid = false;
-      while (!valid){
+      while (!valid) {
         x = random(0, MAP_WIDTH);
         y = random(0, MAP_HEIGHT);
 
-        if (lvl_map[y][x] % 2){
+        if (lvl_map[y][x] % 2) {
           continue;
         }
 
-        if (x == pos_x){
+        if (x == pos_x) {
           continue;
         }
 
-        if (y == pos_y){
+        if (y == pos_y) {
           continue;
         }
 
-        for (auto const& flower: flowers){
-          if (x == flower.x && y == flower.x){
+        for (auto
+          const & flower: flowers) {
+          if (x == flower.x && y == flower.x) {
             continue;
           }
         }
         valid = true;
       }
 
-      Flower flower(x,y);
+      Flower flower(x, y);
       flowers.push_back(flower);
-      } 
     }
+  }
 
-  int is_flower(int x, int y){
-    int idx=0;
-    for(auto const& flower: flowers){
-      if (flower.x == x && flower.y == y){
+  int is_flower(int x, int y) {
+    int idx = 0;
+    for (auto
+      const & flower: flowers) {
+      if (flower.x == x && flower.y == y) {
         return idx;
       }
       idx++;
@@ -525,14 +1281,13 @@ class Game {
     tmp_x = (pos_x + x + MAP_WIDTH) % MAP_WIDTH;
     tmp_y = (pos_y + y + MAP_HEIGHT) % MAP_HEIGHT;
 
-    if (pos_x == tmp_x && pos_y == tmp_y){
+    if (pos_x == tmp_x && pos_y == tmp_y) {
       state = 0;
-    }
-    else {
+    } else {
       state += facing_x;
     }
-    
-    if (lvl_map[tmp_y][tmp_x] % 2 == 0){ // can acess tile
+
+    if (lvl_map[tmp_y][tmp_x] % 2 == 0) { // can acess tile
       if (tmp_x - pos_x) {
         facing_x = ((tmp_x - pos_x) > 0) - ((tmp_x - pos_x) < 0);
       }
@@ -544,15 +1299,15 @@ class Game {
     }
 
     int flower_idx = is_flower(pos_x, pos_y);
-    if (flower_idx != -1){
+    if (flower_idx != -1) {
       score += 10;
-      ticks_left += 5 * FPS;    
+      ticks_left += 5 * FPS;
       flowers.erase(flowers.begin() + flower_idx, flowers.begin() + flower_idx + 1);
     }
 
     // endings
     // not flowers left ending
-    if (!flowers.size()){
+    if (!flowers.size()) {
       score += ticks_left / FPS;
       running = false;
       ending = 1;
@@ -560,92 +1315,87 @@ class Game {
 
     // max score ending
     score = max(0, min(score, 255));
-    if (score == 255){
+    if (score == 255) {
       running = false;
       ending = 2;
     }
 
     // not time left ending
     --ticks_left;
-    if (ticks_left <= 0){
+    if (ticks_left <= 0) {
       running = false;
       ticks_left = 0;
       ending = 3;
     }
 
     draw();
-}
-  
-  void draw(){    
+  }
+
+  void draw() {
     int min_x, min_y;
 
-    if (pos_x < WIDTH / 2){
+    if (pos_x < WIDTH / 2) {
       min_x = 0;
-    }
-    else if (MAP_WIDTH - pos_x < WIDTH / 2){
+    } else if (MAP_WIDTH - pos_x < WIDTH / 2) {
       min_x = MAP_WIDTH - WIDTH;
-    }
-    else {
+    } else {
       min_x = pos_x - WIDTH / 2;
     }
-    
+
     //  need fix for bigger screens ?
-    if (facing_y < 0){
+    if (facing_y < 0) {
       min_y = pos_y - 1;
-    }
-    else if (facing_y > 0) {
+    } else if (facing_y > 0) {
       min_y = pos_y;
-    } 
+    }
     if (pos_y == 0) {
       min_y = 0;
     }
-    if (pos_y == MAP_HEIGHT - 1){
+    if (pos_y == MAP_HEIGHT - 1) {
       min_y = MAP_HEIGHT - 2;
     }
 
     int player_x;
-    if (pos_x < WIDTH / 2){
+    if (pos_x < WIDTH / 2) {
       player_x = pos_x;
-    }
-    else if (MAP_WIDTH - pos_x < WIDTH / 2){
+    } else if (MAP_WIDTH - pos_x < WIDTH / 2) {
       player_x = WIDTH - (MAP_WIDTH - pos_x);
-    }
-    else {
+    } else {
       player_x = WIDTH / 2;
     }
 
     int player_y;
-    if (facing_y > 0){
+    if (facing_y > 0) {
       player_y = 0;
-      if (pos_y == MAP_HEIGHT - 1){
+      if (pos_y == MAP_HEIGHT - 1) {
         player_y = 1;
       }
-      }
-    else if (facing_y < 0){
+    } else if (facing_y < 0) {
       player_y = 1;
     }
-    if (pos_y == 0){
+    if (pos_y == 0) {
       player_y = 0;
     }
-    if (pos_y == MAP_HEIGHT - 1){
+    if (pos_y == MAP_HEIGHT - 1) {
       player_y = 1;
     }
 
     // draw map
     byte map_pice[WIDTH];
-    for (byte j=0; j < HEIGHT; j++){
-      lcd.setCursor(0,j);
+    for (byte j = 0; j < HEIGHT; j++) {
+      lcd.setCursor(0, j);
 
-      for (byte i=0; i < WIDTH; i++){
-        map_pice[i] = get_char(lvl_map[min_y+j][min_x+i]);
+      for (byte i = 0; i < WIDTH; i++) {
+        map_pice[i] = get_char(lvl_map[min_y + j][min_x + i]);
       }
 
       print_array(map_pice, WIDTH);
     }
 
     // draw flowers
-    for(auto const& flower: flowers) {
-      if ((flower.x >= min_x && flower.x < min_x + WIDTH)  && (flower.y >= min_y && flower.y < min_y + HEIGHT)){
+    for (auto
+      const & flower: flowers) {
+      if ((flower.x >= min_x && flower.x < min_x + WIDTH) && (flower.y >= min_y && flower.y < min_y + HEIGHT)) {
         lcd.setCursor(flower.x - min_x, flower.y - min_y);
         lcd.write(flower.type);
       }
@@ -661,7 +1411,7 @@ class Game {
       B01010,
       B01010
     };
-    
+
     byte stay_left[] = {
       B01100,
       B01100,
@@ -672,7 +1422,7 @@ class Game {
       B01010,
       B01010
     };
-    
+
     byte run_right_1[] = {
       B00110,
       B00110,
@@ -683,7 +1433,7 @@ class Game {
       B01010,
       B10010
     };
-    
+
     byte run_right_2[] = {
       B00110,
       B00110,
@@ -694,7 +1444,7 @@ class Game {
       B10000,
       B00000
     };
-    
+
     byte run_right_3[] = {
       B00110,
       B00110,
@@ -705,7 +1455,7 @@ class Game {
       B01001,
       B00100
     };
-    
+
     byte run_right_4[] = {
       B00110,
       B00110,
@@ -716,7 +1466,7 @@ class Game {
       B01010,
       B01010
     };
-    
+
     byte run_left_1[] = {
       B01100,
       B01100,
@@ -727,7 +1477,7 @@ class Game {
       B01010,
       B01001
     };
-    
+
     byte run_left_2[] = {
       B01100,
       B01100,
@@ -738,7 +1488,7 @@ class Game {
       B10000,
       B00001
     };
-    
+
     byte run_left_3[] = {
       B01100,
       B01100,
@@ -762,74 +1512,65 @@ class Game {
     };
 
     byte character[8];
-    if (state > 0 ){
+    if (state > 0) {
       int i = abs((state % 4));
-      if (i==0){
+      if (i == 0) {
         memcpy(character, run_right_1, 8);
-      }
-      else if (i==1){
+      } else if (i == 1) {
         memcpy(character, run_right_2, 8);
-      }
-      else if (i==2){
+      } else if (i == 2) {
         memcpy(character, run_right_3, 8);
-      }
-      else if (i==3){
+      } else if (i == 3) {
         memcpy(character, run_right_4, 8);
       }
-    }
-    else if(state < 0){
+    } else if (state < 0) {
       int i = abs((state % 4));
-      if (i==0){
+      if (i == 0) {
         memcpy(character, run_left_1, 8);
-      }
-      else if (i==1){
+      } else if (i == 1) {
         memcpy(character, run_left_2, 8);
-      }
-      else if (i==2){
+      } else if (i == 2) {
         memcpy(character, run_left_3, 8);
-      }
-      else if (i==3){
+      } else if (i == 3) {
         memcpy(character, run_left_4, 8);
       }
-    }
-    else {
-      if (facing_x > 0 ){
+    } else {
+      if (facing_x > 0) {
         memcpy(character, stay_right, 8);
-      }else {
+      } else {
         memcpy(character, stay_left, 8);
       }
     }
 
-    lcd.createChar(0, character);    
+    lcd.createChar(0, character);
     lcd.setCursor(player_x, player_y);
     lcd.write(0);
-    }
+  }
 
   private:
-  byte get_char(byte c){
-    switch (c){
+    byte get_char(byte c) {
+      switch (c) {
       case 0:
         return ASCII_SPACE;
       case 1:
         return 255;
       case 3:
         return BUSH_TOP;
-      default :
+      default:
         return 88; // ASCII 'X' code
+      }
     }
-  }
 };
 
 Game game(PLAYER_START_X, PLAYER_START_Y);
 
-void game_action(){
-  int x = - joy.moveX();
-  int y = - joy.moveY();
-  game.move(x,y);
+void game_action() {
+  int x = -joy.moveX();
+  int y = -joy.moveY();
+  game.move(x, y);
 }
 
-void play_game() { 
-  //counting
+void play_game() {
   lcd.clear();
   for (int i = 0; i < 17; i++) {
     lcd.setCursor(i, 0);
@@ -855,24 +1596,22 @@ void play_game() {
   delay(1000);
 
   game.reset();
-  timer.begin(game_action, 1000000/FPS);
-  while(game.running){
+  timer.begin(game_action, 1000000 / FPS);
+  while (game.running) {
     delay(10); // do not remove this, otherwise game won't stop after dead ¯\_(ツ)_/¯
   }
-  
+
   timer.end();
   wait_until_released();
-  if (game.ending == 1){
+  if (game.ending == 1) {
     lcd.setCursor(4, 0);
     lcd.print("TIME'S UP");
     lcd.setCursor(7, 1);
     lcd.print(game.score);
-  }
-  else if (game.ending == 2){
+  } else if (game.ending == 2) {
     lcd.setCursor(4, 0);
     lcd.print("MAX SCORE");
-  }
-  else if (game.ending == 3){
+  } else if (game.ending == 3) {
     lcd.setCursor(4, 0);
     lcd.print("GAME OVER");
     lcd.setCursor(7, 1);
@@ -882,18 +1621,18 @@ void play_game() {
   // save score
   if (game.score) {
     byte scores[20];
-    int idx =-1;
-    for (int i = 0; i < 20; i++){
+    int idx = -1;
+    for (int i = 0; i < 20; i++) {
       byte score = EEPROM.read(i);
       scores[i] = score;
-      if (score < game.score && idx != -1){
+      if (score < game.score && idx != -1) {
         idx = i;
       }
     }
 
     if (idx != -1) {
-      for (int i = 19; i > idx; i--){
-        EEPROM.write(i+1, scores[i]);
+      for (int i = 19; i > idx; i--) {
+        EEPROM.write(i + 1, scores[i]);
       }
       EEPROM.write(idx, game.score);
     }
@@ -936,7 +1675,7 @@ void list_records() {
 
 class Credists {
   public:
-  int i = 0;
+    int i = 0;
   String strs[10] = {
     "                ",
     "                ",
@@ -1006,7 +1745,7 @@ void print_array(const byte arr[],
 
 class How_to {
   public:
-  int i = 0;
+    int i = 0;
   String strs[11] = {
     "     Zbieraj    ",
     "     kwiatki    ",
@@ -1027,7 +1766,7 @@ class How_to {
   };
   void inc() {
     s1 = s2;
-    if (s2 == 10){
+    if (s2 == 10) {
       flowers = true;
     }
     s2 = ++s2 % s_size;
@@ -1040,17 +1779,17 @@ class How_to {
 
   void print() {
     lcd.clear();
-    if (flowers){
+    if (flowers) {
       flowers = false;
-      for (int j = 0; j < HEIGHT; j++){
+      for (int j = 0; j < HEIGHT; j++) {
         lcd.setCursor(0, j);
-        for (int i = 0; i < WIDTH; i++){
+        for (int i = 0; i < WIDTH; i++) {
           lcd.write(random(1, 9));
         }
       }
       return;
     }
-    
+
     String str1 = strs[s1];
     String str2 = strs[s2];
     lcd.setCursor(0, 0);
@@ -1065,11 +1804,11 @@ class How_to {
 
 How_to how_to;
 
-void print_how_to(){
+void print_how_to() {
   how_to.print();
 }
 
-void how_to_play(){
+void how_to_play() {
   how_to.clear();
   timer.begin(print_how_to, 500000);
   wait_until_released();
