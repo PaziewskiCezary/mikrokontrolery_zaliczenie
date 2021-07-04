@@ -1,6 +1,6 @@
 # Projekt zaliczeniowy na programowanie mikrokontrolerów
 
-Ptosta gra 2D wykorzystująca joystick i wyświetlacz znakowy LCD. Zadaniem gracza jest zebrać wszystkie kwiatki z labiryntu zanim skończy się czas.
+Prosta gra 2D wykorzystująca joystick i wyświetlacz znakowy LCD. Zadaniem gracza jest zebrać wszystkie kwiatki z labiryntu zanim skończy się czas.
 
 ![układ](https://github.com/PaziewskiCezary/mikrokontrolery_zaliczenie/blob/main/flower.png?raw=true)
 
