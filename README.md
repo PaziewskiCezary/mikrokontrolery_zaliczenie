@@ -25,4 +25,9 @@ Połączenie:
   * SDA - Pin 18
   * SCL - Pin 19
 
+# Efekt końcowy
+
+![układ](https://github.com/PaziewskiCezary/mikrokontrolery_zaliczenie/blob/main/uklad.jpg?raw=true)
+
+**Video:**
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/sfHhkxqg5Vs/0.jpg)](https://www.youtube.com/watch?v=sfHhkxqg5Vs)
