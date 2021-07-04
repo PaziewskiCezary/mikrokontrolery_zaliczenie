@@ -25,8 +25,4 @@ Połączenie:
   * SDA - Pin 18
   * SCL - Pin 19
 
-<iframe width="560" height="315"
-src="https://youtu.be/sfHhkxqg5Vs" 
-frameborder="0" 
-allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-allowfullscreen></iframe>
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/sfHhkxqg5Vs/0.jpg)](https://www.youtube.com/watch?v=sfHhkxqg5Vs)
