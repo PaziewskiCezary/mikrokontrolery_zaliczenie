@@ -30,6 +30,6 @@ Połączenie:
   * SDA - Pin 18
   * SCL - Pin 19
 
-## Efekt końcowY
+## Efekt końcowy
 **Video:**
 [![video tutaj](https://img.youtube.com/vi/sfHhkxqg5Vs/0.jpg)](https://www.youtube.com/watch?v=sfHhkxqg5Vs)
