@@ -21,7 +21,7 @@ Połączenie:
 * Joystick:
   * GND - GND
   * +5V - 3.3V (ADC Teensy LC obsługuje napięcia do 3.3V) 
-  * VRy - Analog 1
+  * VRx - Analog 1
   * VRy - Analog 0
   * SW  - Analog 2
 * LCD:
