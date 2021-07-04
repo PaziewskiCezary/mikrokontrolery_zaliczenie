@@ -165,6 +165,8 @@ byte bush_top[] = {
   B11111
 };
 
+
+// timers
 IntervalTimer timer;
 
 void wait_until_released() {
@@ -225,15 +227,12 @@ class Menu {
   int m_cursor_pos = 0;
   int start_, end_;
 
-  //    Menu(String options[], const int options_count, const int menu_length=1, const LCD_I2C& display_) {
   Menu(String options[],
     const int options_count,
-      const int menu_length,
-        const Joy & joy_) {
+      const int menu_length) {
     opts = options;
     opts_count = options_count;
     m_length = menu_length;
-    //      lcd(display_);     
 
     start_ = 0;
     end_ = menu_length - 1;
@@ -299,7 +298,6 @@ class Menu {
 
   return m_pos;
 }
-
   private:
   String * opts;
 };
@@ -311,7 +309,7 @@ String options[4] = {
   "    O GRZE    "
 };
 int max_option = 4;
-Menu menu(options, max_option, 2, joy);
+Menu menu(options, max_option, 2);
 
 void lcd_setup() {
 
@@ -351,12 +349,10 @@ void welcome_screen() {
   byte bottom[WIDTH];
 
   while (s1_curr_offset < 17 && s2_curr_offset + s2.length() >= 0) {
-    //for (int i=-max(s1.length(), s2.length()); i < 16; i++){
-
     for (int j = 0; j < WIDTH; j++) {
         top[j] = ASCII_SPACE;
         bottom[j] = ASCII_SPACE;
-   }
+    }
 
     for (unsigned int j = 0; j < s1.length(); j++) {
       if (s1_curr_offset + j >= 0 && s1_curr_offset + j < 16) {
@@ -435,7 +431,6 @@ class Flower {
   }
 };
 
-
 class Game {
   public:
   int score;
@@ -456,14 +451,12 @@ class Game {
   int state;
   
   Game(int x, int y) {
-
     start_x = x;
     start_y = y;
     reset();
     }
     
   void reset(){
-
     pos_x = start_x;
     pos_y = start_y;
 
@@ -485,7 +478,6 @@ class Game {
 
     flowers.clear();
     for (int i = 0; i < flowers_count; i++){
-      
       byte x, y;
       bool valid = false;
       while (!valid){
@@ -831,7 +823,6 @@ class Game {
 Game game(PLAYER_START_X, PLAYER_START_Y);
 
 void game_action(){
-  
   int x = - joy.moveX();
   int y = - joy.moveY();
   game.move(x,y);
@@ -886,7 +877,6 @@ void play_game() {
     lcd.print("GAME OVER");
     lcd.setCursor(7, 1);
     lcd.print(game.score);
-    
   }
 
   // save score
@@ -934,7 +924,7 @@ void list_records() {
     String s(c);
     records[i] = s;
   }
-  Menu records_menu(records, scores_len, 2, joy);
+  Menu records_menu(records, scores_len, 2);
 
   int option = -1;
   while (option == -1) {
