@@ -18,7 +18,7 @@ Połączenie:
   * +5V - 3.3V (ADC Teensy LC obsługuje napięcia do 3.3V) 
   * VRy - Analog 1
   * VRy - Analog 0
-  * SW  - Analog
+  * SW  - Analog 2
 * LCD:
   * GND - GND
   * VCC - 5V
@@ -30,4 +30,4 @@ Połączenie:
 ![układ](https://github.com/PaziewskiCezary/mikrokontrolery_zaliczenie/blob/main/uklad.jpg?raw=true)
 
 **Video:**
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/sfHhkxqg5Vs/0.jpg)](https://www.youtube.com/watch?v=sfHhkxqg5Vs)
+[![video tutaj](https://img.youtube.com/vi/sfHhkxqg5Vs/0.jpg)](https://www.youtube.com/watch?v=sfHhkxqg5Vs)
