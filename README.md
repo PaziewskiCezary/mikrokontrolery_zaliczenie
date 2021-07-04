@@ -2,7 +2,12 @@
 
 Ptosta gra 2D wykorzystująca joystick i wyświetlacz znakowy LCD. Zadaniem gracza jest zebrać wszystkie kwiatki z labiryntu zanim skończy się czas.
 
+![układ](https://github.com/PaziewskiCezary/mikrokontrolery_zaliczenie/blob/main/flower.png?raw=true)
+
 ## Układ
+
+![układ](https://github.com/PaziewskiCezary/mikrokontrolery_zaliczenie/blob/main/uklad.jpg?raw=true)
+
 Sprzęt:
 * Teansy LC
 * LCD hd44780 2×16 z konwerterem na I2C
@@ -25,9 +30,6 @@ Połączenie:
   * SDA - Pin 18
   * SCL - Pin 19
 
-## Efekt końcowy
-
-![układ](https://github.com/PaziewskiCezary/mikrokontrolery_zaliczenie/blob/main/uklad.jpg?raw=true)
-
+## Efekt końcowY
 **Video:**
 [![video tutaj](https://img.youtube.com/vi/sfHhkxqg5Vs/0.jpg)](https://www.youtube.com/watch?v=sfHhkxqg5Vs)
